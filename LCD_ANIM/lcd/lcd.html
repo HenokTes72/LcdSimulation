@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> LCD simulation </title>
+        <script src ="../js/jquery-1.11.0.min.js"></script>
+        <style>
+            .container{
+                position: relative;
+                margin: 0px auto;
+            }
+            .pixel{
+                position: absolute;
+                height: 10px;
+                width:10px;
+            }
+        </style>
+        <script>
+            $(document).ready(function(){
+                var currentTop = 10;
+                var pixelInfo = {
+                    height: 5,
+                    width: 5
+                };
+
+                addRows(132,262);
+
+                function addRow(rowLength) {
+
+                    var containier = $(".container");
+                    var left = 10;
+                    var red = 0,green=0,blue=0;
+                    for (var i = 0; i < rowLength; i++) {
+                        red = binaryToDecimalConverter(bitGenerator(8)); //an eight bit generator
+                        green = binaryToDecimalConverter(bitGenerator(8));
+                        blue = binaryToDecimalConverter(bitGenerator(8));
+
+                        containier.append('<div  class="pixel" style="background-color:'+"rgb("+red+","+green+","+blue+")"+';top:'+(currentTop) +'px ;left:'+(left + pixelInfo.width) + 'px">');
+                        left += pixelInfo.width;
+                    }
+
+                    currentTop += pixelInfo.height;
+                }
+
+                function addRows(numberOfRows,numberOfColumns){
+                    for(var k=0;k<numberOfRows;k++){
+                        addRow(numberOfColumns);
+                    }
+                }
+                function binaryToDecimalConverter(binaryDigit){
+                    var decimalNum = 0;
+                    var bdigitLength = binaryDigit.length;
+                    for(var i=0;i<bdigitLength;i++){
+                        decimalNum+=(parseInt(binaryDigit[bdigitLength-1-i]) * powerTwo(i));
+                    }
+                    return decimalNum;
+                }
+                function powerTwo(exponent){
+                    var res = 1;
+                    for(var i=0;i<exponent;i++){
+                        res*=2;
+                    }
+                    return res;
+                }
+                function bitGenerator(numberOfBit){
+                    var result="";
+                    for(var k=0;k<numberOfBit;k++){
+                        result+=parseInt((Math.random()*1.99)); // bit 0 | 1
+                    }
+                    return result;
+                }
+
+            });
+
+            
+        </script>
+    </head>
+    <body>
+        <div class="container"></div>
+    </body>
+</html>
